@@ -1,0 +1,148 @@
+\documentclass[aps,prb,twocolumn,showpacs,floatfix,superscriptaddress]{revtex4-1}
+\usepackage{dcolumn}
+\usepackage{bm}
+\usepackage{soul}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{verbatim}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\usepackage[outdir=./]{epstopdf}
+\usepackage{float}
+\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[caption=false]{subfig}
+\newcommand{\xz}{d$_\mathrm{xz}$\ }
+\newcommand{\yz}{d$_\mathrm{yz}$\ }
+\newcommand{\xy}{d$_\mathrm{xy}$\ }
+\newcommand{\xxyy}{d$_\mathrm{x^2-y^2}$\ }
+\newcommand{\zz}{d$_\mathrm{3z^2-r^2}$\ }
+\newcommand{\eV}{\,\mathrm{eV}}
+\newcommand{\nB}{n_\mathrm{B}}
+\newcommand{\nD}{n_\mathrm{D}}
+\newcommand{\kF}{k_\mathrm{F}}
+\newcommand{\meV}{\,\mathrm{meV}}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\kk}{\mathbf{k}}
+\newcommand{\kkp}{\mathbf{k'}}
+\newcommand{\qq}{\mathbf{q}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\EE}{\mathbf{E}}
+\newcommand{\filler}[1]{\textcolor{red}{#1}}
+\newcommand{\trel}{t_\mathrm{rel}}
+\newcommand{\tave}{t_\mathrm{ave}}
+\newcommand{\first}{$1^\mathrm{st}$\ }
+\newcommand{\tmin}{t_\mathrm{min}}
+\newcommand{\td}{t_\mathrm{delay}}
+\newcommand{\fs}{\,\mathrm{fs}}
+\newcommand{\resigma}{\mathrm{Re}\Sigma^{\mathrm{R}}}
+\newcommand{\imsigma}{\mathrm{Im}\Sigma^{\mathrm{R}}}
+\newcommand{\repi}{\mathrm{Re}\ \Pi^R}
+\newcommand{\impi}{\mathrm{Im}\ \Pi^R}
+\newcommand{\redr}{\mathrm{Re}\ D^R}
+\newcommand{\imdr}{\mathrm{Im}\ D^R}
+\newcommand{\regr}{\mathrm{Re}\ G^R}
+\newcommand{\imgr}{\mathrm{Im}\ G^R}
+\newcommand{\regl}{\mathrm{Re}\ G^<}
+\newcommand{\imgl}{\mathrm{Im}\ G^<}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\FF}{\mathrm{F}}
+\DeclareGraphicsExtensions{.png,.jpg,.pdf}
+\bibliographystyle{apsrev4-1}
+
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\begin{document}
+\title{Travelling Salesman Problem Solved Using Simulated Annealing}
+\author{O.~Abdurazakov}
+\affiliation{\textbf {NC State} University, Department of Physics, Raleigh, NC 27695}
+
+\begin{abstract}
+Here, we study the traveling salesman problem (TSP) in terms of the simulated annealing method (SA) and compare obtained results with those from the brute force method. For a small number cities both method yield similar results. We also obtain probable shortest distances for the larger number of cities on a lattice using the SA method. The SA method proves to be more efficient and practical for a large number of cities due to its simplicity and computationally feasibility. 
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+The traveling salesman problem (TSP) is a well-know optimization problem, 
+which has been studied for many decades. It is about finding the shortest 
+possible path a salesman can take to span a given number of destinations 
+and return back. It is considered to a be NP-hard problem, and many exact 
+and heuristic method have been developed to tackle it. In this project, 
+we study TSP in terms of the simulated annealing method by generating random points on 
+a square lattice of size thirty and more points. The method is inspired by the procedure of annealing metals to obtain desired crystal structure. After being heated, the temperature of an alloy or a metal is slowly decreased during which the system is allowed to explore many possible configurations so that, eventually at low enough temperatures, the crystal structure settles into the lowest possible energy state free of dislocation and imperfections. In a similar fashion, SA algorithm allows the system to explore a broader landscape in a given phase space so that the system does not get trapped in local extrema in the search of global extrema. In our work, we explore various number of cities or points in terms of SA and compare the results to those obtained by brute force.    
+
+\begin{figure}
+        \includegraphics[width=0.99\columnwidth]{seven_cities.png}
+        \caption{Comparison of the shortest paths obtained from the brute force method (left panel) and the simulated annealing method (right panel) for seven cities.}
+        \label{fig:seven_cities}
+\end{figure}
+
+\section{Methods}
+We use one of the simplest simulated annealing algorithms to study TSP in our work. We have a number of cities on a square lattice whose coordinates generated randomly by the uniform random generator. Our task is to minimize the total distance or the cost $\Delta $during the travel which is the sum of distances between adjacent cities $d_{i,j}$ along a path. Therefore, $\Delta = \sum_{i,j}d_{i,j}$ where $i \neq j $. Also, we assign a control parameter to the system--an defective temperature $T$. Initially, an arbitrary configuration is chosen, which is not necessarily the shortest one. We let the system explore other possible configurations by flipping the indices of two randomly chosen cities and accept this move if the cost is lowered or with the probability of $P=\mathrm{exp}(-\Delta/T)$ otherwise. In this way, some 'unfavorable' configurations are also allowed which might 'guide' the system toward the global minimum. The the procedure is repeated at lower temperatures. As it is done in metal annealing, the effective temperature is slowly lowered. Eventually, the system settles into a reasonable optimal configuration in terms of the cost, which is the the total distance along a path. 
+
+Initially, we study the problem exactly by calculating the total distance of all possible configurations for seven cities, so there are $7!$ number of possibilities and $6!/2$ possibilities when the over counting is considered. We can see that the number of configurations grow very fast, so the brute force method is no longer a viable route. Then we look for the shortest path among them. We compare the results for seven cities obtained using both methods. 
+
+\section{Results}
+\begin{figure*}
+        \includegraphics[width=0.90\textwidth]{cities.png}
+        \caption{The shortest paths obtained from the simulated annealing method for thirty, fifty, and hundred cities in a square lattice.}
+        \label{fig:cities}
+\end{figure*}
+
+The results are obtained for seven randomly generated points (cities) on a square lattice by brute force and SA. We show the configurations with the shortest paths in Fig.~\ref{fig:seven_cities}. We can see that both methods give the same configuration of cities. The shortest distance is approximately $3.13$ in both cases. However, note that we need to permute over $7040$ different configurations by brute force.
+
+\begin{figure*}
+        \includegraphics[width=0.90\textwidth]{cost.png}
+        \caption{The length of the shortest paths as functions of an effective temperature using simulated annealing method for thirty, fifty, and hundred cities. Here, the path length and the temperature have the same units (or are taken to be unitless)}
+        \label{fig:cost}
+\end{figure*}
+
+Now we can explore more number of cities on our lattice. Figure ~\ref{fig:cities} displays the obtained optimal configuration for $30$, $50$, and $100$ cities. The corresponding paths length of these optimum configurations are approximately $4.32$ ,$6.21$,and $11.76$ respectively. It would be computationally impossible to treat these number of cities by brute force. To get more insight into how the these configurations are obtained we plot the the total distance versus the annealing temperature in Fig.~\ref{fig:cost}. We see that at hight temperatures, the cost function (distance) fluctuates showing that the system is able to explore various configurations. However, as the temperature decreased the available phase space is rapidly contracted. Eventually, the system settles possibly into the configuration of shortest path length. The cost function behaves in the same fashion as a function of the effective temperature with respect to the number of cities.
+
+In our algorithm, at each temperature we repeat the flipping of the indices of randomly chosen cities multiple times so that the system can explore more phase space. Although without this performing this procedure we obtain reasonable results, our results improve with increasing the number of these iterations, and it saturates around $50$ as shown in Fig.~\ref{fig:iteration}. We can observe that the cost function goes down with increasing the number of iterations showing towards the true global optimum configuration. Therefore, we performed SA procedure with at lease $50$ iterations at each temperature.   
+\begin{figure}
+        \includegraphics[width=0.90\columnwidth]{iteration.png}
+        \caption{The path length as a function of an effective temperature for fifty cities plotted for varies number of equilibration steps or iterations.}
+        \label{fig:iteration}
+\end{figure}
+
+\section{Conclusions}
+
+In this mini-project, we study the traveling salesman problem using the simulated annealing algorithm. Despite its simplicity, it yields a reasonable results for large number of cities in finding the optimal configuration in terms of the distance traveled by the salesman. It is computationally relatively inexpensive method because it does not sample all possible configuration space but only 'thermodynamically' relevant domains. We obtained the possible shortest path for thirty, fifty, and hundred cities randomly generated on a square lattice. For small number of cities, it yields the same results as those obtained by the exact method used in the work. We showed this by simulating the path span over seven cities. It offers better solutions if one allows the system to explore more configurations by increasing the number of iteration at each system temperature.  
+
+\section*{Appendix:~Codes}
+
+\lstinputlisting[language=python]{/home/omo/advanced_comp_physisc/hw1/ts.cc}
+
+\end{document}
